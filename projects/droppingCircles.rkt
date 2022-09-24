@@ -46,13 +46,9 @@
 
 (define COLOR-SET (list 'red 'green 'blue 'yellow 'orange))
 
-(define ball-start 100)
-
-(define window (rectangle WINDOW-HEIGHT WINDOW-WIDTH 'solid 'gray))
-
-;(define ball-x (- (/ WINDOW-WIDTH 2) 0))
+(define BALL-START (- -5  MAX-RADIUS))
          
-(define-struct ws (misses points ball-radius ball-color ball-speed ball-x ball-y ))
+(define-struct ws (misses points ball-radius ball-color ball-speed ball-y ))
 
 ; use mouse movement as randomizer
 ; outputs a random color from a list of colors  
@@ -62,7 +58,8 @@
 (define (radiusRandomizer n)(if (= n 1) 10 10))
 
 ; outputs a random speed within the bounds of MAX-SPEED and MIN-SPEED (MIN-SPEED <= SPEED <= MAX-SPEED)
-(define (speedRandomizer n)(if (= n 1) 1 1))
+(define (speedRandomizer n)(if (= n 1) 3 3))
+
 
 ; worldState -> worldState 
 ; tock pseudocode
@@ -80,70 +77,70 @@
     [(= (ws-misses worldState) MAX-MISSES)
      (stop-with "GAME OVER")]
     
-    [(>= (ws-ball-y worldState) WINDOW-HEIGHT)
-     (make-ws      (+ 1 (ws-misses worldState)) ;increment misses
-                   (ws-points worldState) ;retain points
-                   (radiusRandomizer 1) ; mutate radius
-                   (colorRandomizer 1) ; mutate color
-                   (speedRandomizer 1) ; mutate speed
-                   (ws-ball-x worldState)
-                   ball-start)]
+    [(>= (- (ws-ball-y worldState) (ws-ball-radius worldState)) WINDOW-HEIGHT)
+     (make-ws
+      (+ 1 (ws-misses worldState)) ;increment misses
+      (ws-points worldState) ;retain points
+      (radiusRandomizer 1) ; mutate radius
+      (colorRandomizer 1) ; mutate color
+      (speedRandomizer 1) ; mutate speed
+      BALL-START)]
     
     [else
-     (make-ws (ws-misses worldState) ;retain misses
-                   (ws-points worldState) ;retain points
-                   (ws-ball-radius worldState) ; retain radius
-                   (ws-ball-color worldState) ; retain color
-                   (ws-ball-speed worldState) ; retain speed
-                   (ws-ball-x worldState)
-                   (+ (ws-ball-y worldState) (ws-ball-speed worldState)))])) ; mutate ball-y. ie move the ball down
+     (make-ws
+      (ws-misses worldState) ;retain misses
+      (ws-points worldState) ;retain points
+      (ws-ball-radius worldState) ; retain radius 
+      (ws-ball-color worldState) ; retain color
+      (ws-ball-speed worldState) ; retain speed
+      (+ (ws-ball-y worldState) (ws-ball-speed worldState)))])) ; mutate ball-y. ie move the ball down
 
 
 ; worldState -> Image
 ; draws a rectangle overlayed by a circle (ball (ws-ball worldState)) 
-(define (draw worldState) (place-image
-                           (rectangle WINDOW-WIDTH MAX-RADIUS 'solid 'white) ; covers ball entrance 
-                            (/ WINDOW-WIDTH 2) 0
-                           (place-image
-                            (circle (ws-ball-radius worldState) 'solid (ws-ball-color worldState))
-                            (ws-ball-x worldState)
-                            (ws-ball-y worldState)
-                            (rectangle WINDOW-WIDTH WINDOW-HEIGHT 'solid 'black)))) ; background
+(define (draw worldState)
+    (place-image ; 
+     (circle (ws-ball-radius worldState) 'solid (ws-ball-color worldState))
+     (/ WINDOW-WIDTH 2) ; x
+     (ws-ball-y worldState) ; y
+     (rectangle WINDOW-WIDTH WINDOW-HEIGHT 'solid 'black))) ; background
+
 
 ; Number, Number, Number, Number -> Number
 ; d(A, B) = sqrt((x2 -x1)^2 + (y2 - y1)^2) 
 (define (distanceBetweenTwoPoints Ax Ay Bx By) (sqrt (+ (expt (- Bx Ax) 2)
                                                         (expt (- By Ay) 2))))
 
+
 ; worldState -> worldState
 ; if the distance between mouse coords and ball coords is <= ws-ball-radius and mouse is clicked
 ;  increment points
 ;  remove ball
-;  drop another ball 
+;  drop another ball
+; else
+;  return worldState ie do nothing 
 (define (mouse-handler worldState m-x m-y click)
   (cond
-    [(and (<   (distanceBetweenTwoPoints (ws-ball-x worldState) (ws-ball-y worldState) m-x m-y )
-               (* 1 (ws-ball-radius worldState)))
+    [(and (<= (distanceBetweenTwoPoints (/ WINDOW-WIDTH 2) (ws-ball-y worldState) m-x m-y )
+              (ws-ball-radius worldState))
           (mouse=? click "button-down"))
-            (make-ws
-             (ws-misses worldState)       ;retain misses
-             (+ 1 (ws-points worldState)) ; increment points
-             (radiusRandomizer 1)         ; mutate radius
-             'green ; mutate color
-             (speedRandomizer 1) ; mutate speed
-             (ws-ball-x worldState)
-             ball-start)]
+
+     (make-ws
+      (ws-misses worldState)       ;retain misses
+      (+ 1 (ws-points worldState)) ; increment points
+      (radiusRandomizer 1)         ; mutate radius
+      'green ; mutate color
+      (speedRandomizer 1) ; mutate speed
+      BALL-START)]
+
     [else worldState]
     ))  
  
 
-(define init-ws (make-ws 0 0 10 'red 0 100 100))
+(define init-ws (make-ws 0 0 MAX-RADIUS 'red 0.3 BALL-START))
 
 (big-bang init-ws
  (to-draw draw) ; for drawing
  (on-mouse mouse-handler) ; to respond to key press
  (on-tick tock) ; every clock tick
- (state #t))
-
- 
- 
+ (state #f))
