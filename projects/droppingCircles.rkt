@@ -46,14 +46,15 @@
 
 (define COLOR-SET (list 'red 'green 'blue 'yellow 'orange))
 
-(define ball-start 0)
+(define ball-start 100)
 
 (define window (rectangle WINDOW-HEIGHT WINDOW-WIDTH 'solid 'gray))
 
-(define ball-x (/ WINDOW-WIDTH 2))
+(define ball-x (- (/ WINDOW-WIDTH 2) 0))
          
 (define-struct ws (misses points ball-radius ball-color ball-speed ball-y))
 
+; use mouse movement as randomizer
 ; outputs a random color from a list of colors  
 (define (colorRandomizer n) (if (= n 1) 'red 'red))
 
@@ -119,25 +120,27 @@
 ;  drop another ball 
 (define (mouse-handler worldState m-x m-y click)
   (cond
-    [(and (<= (abs (distanceBetweenTwoPoints m-x m-y ball-x (ws-ball-y worldState)))
-              (+ 5 (ws-ball-radius worldState)))
+    [(and (<  (abs (distanceBetweenTwoPoints ball-x (ws-ball-y worldState) m-x m-y ))
+               (* 1 (ws-ball-radius worldState)))
           (mouse=? click "button-down"))
             (make-ws
              (ws-misses worldState)       ;retain misses
              (+ 1 (ws-points worldState)) ; increment points
              (radiusRandomizer 1)         ; mutate radius
-             (colorRandomizer 1) ; mutate color
+             'green ; mutate color
              (speedRandomizer 1) ; mutate speed
              ball-start)]
     [else worldState]
     ))  
+ 
 
-
-(define init-ws (make-ws 0 0 10 'red 10  ball-start))
+(define init-ws (make-ws 0 0 10 'red 0  ball-start))
 
 (big-bang init-ws
  (to-draw draw) ; for drawing
  (on-mouse mouse-handler) ; to respond to key press
- (on-tick tock)) ; every clock tick
+ (on-tick tock) ; every clock tick
+ (state #f))
+
  
  
