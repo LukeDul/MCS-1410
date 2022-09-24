@@ -34,7 +34,7 @@
 
 (define WINDOW-WIDTH 300)
 
-(define MAX-MISSES 1) ; number of misses allowed before game over
+(define MAX-MISSES 10) ; number of misses allowed before game over
 
 (define MAX-RADIUS 30)
 
@@ -61,8 +61,7 @@
 (define (radiusRandomizer n)(if (= n 1) 10 10))
 
 ; outputs a random speed within the bounds of MAX-SPEED and MIN-SPEED (MIN-SPEED <= SPEED <= MAX-SPEED)
-(define (speedRandomizer n)(if (= n 1) 2 2))
-
+(define (speedRandomizer n)(if (= n 1) 1 1))
 
 ; worldState -> worldState 
 ; tock pseudocode
@@ -108,9 +107,30 @@
                             (ws-ball-y worldState)
                             (circle (ws-ball-radius worldState) 'solid (ws-ball-color worldState)))))
 
+; Number, Number, Number, Number -> Number
+; d(A, B) = sqrt((x2 -x1)^2 + (y2 - y1)^2) 
+(define (distanceBetweenTwoPoints Ax Ay Bx By) (sqrt (+ (expt (- Bx Ax) 2)
+                                                        (expt (- By Ay) 2))))
 
-; worldState -> worldState 
-(define (mouse-handler worldState) (+ 1 worldState)) 
+; worldState -> worldState
+; if the distance between mouse coords and ball coords is <= ws-ball-radius and mouse is clicked
+;  increment points
+;  remove ball
+;  drop another ball 
+(define (mouse-handler worldState m-x m-y click)
+  (cond
+    [(and (<= (abs (distanceBetweenTwoPoints m-x m-y ball-x (ws-ball-y worldState)))
+              (+ 5 (ws-ball-radius worldState)))
+          (mouse=? click "button-down"))
+            (make-ws
+             (ws-misses worldState)       ;retain misses
+             (+ 1 (ws-points worldState)) ; increment points
+             (radiusRandomizer 1)         ; mutate radius
+             (colorRandomizer 1) ; mutate color
+             (speedRandomizer 1) ; mutate speed
+             ball-start)]
+    [else worldState]
+    ))  
 
 
 (define init-ws (make-ws 0 0 10 'red 10  ball-start))
