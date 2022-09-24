@@ -50,9 +50,9 @@
 
 (define window (rectangle WINDOW-HEIGHT WINDOW-WIDTH 'solid 'gray))
 
-(define ball-x (- (/ WINDOW-WIDTH 2) 0))
+;(define ball-x (- (/ WINDOW-WIDTH 2) 0))
          
-(define-struct ws (misses points ball-radius ball-color ball-speed ball-y))
+(define-struct ws (misses points ball-radius ball-color ball-speed ball-x ball-y ))
 
 ; use mouse movement as randomizer
 ; outputs a random color from a list of colors  
@@ -86,6 +86,7 @@
                    (radiusRandomizer 1) ; mutate radius
                    (colorRandomizer 1) ; mutate color
                    (speedRandomizer 1) ; mutate speed
+                   (ws-ball-x worldState)
                    ball-start)]
     
     [else
@@ -94,19 +95,20 @@
                    (ws-ball-radius worldState) ; retain radius
                    (ws-ball-color worldState) ; retain color
                    (ws-ball-speed worldState) ; retain speed
+                   (ws-ball-x worldState)
                    (+ (ws-ball-y worldState) (ws-ball-speed worldState)))])) ; mutate ball-y. ie move the ball down
 
 
 ; worldState -> Image
-; draws a rectangele overlayed by a circle (ball (ws-ball worldState)) 
-(define (draw worldState) (overlay/xy
+; draws a rectangle overlayed by a circle (ball (ws-ball worldState)) 
+(define (draw worldState) (place-image
                            (rectangle WINDOW-WIDTH MAX-RADIUS 'solid 'white) ; covers ball entrance 
-                            0 0
-                           (underlay/xy
-                            (rectangle WINDOW-WIDTH WINDOW-HEIGHT 'solid 'black) ; background
-                            ball-x
+                            (/ WINDOW-WIDTH 2) 0
+                           (place-image
+                            (circle (ws-ball-radius worldState) 'solid (ws-ball-color worldState))
+                            (ws-ball-x worldState)
                             (ws-ball-y worldState)
-                            (circle (ws-ball-radius worldState) 'solid (ws-ball-color worldState)))))
+                            (rectangle WINDOW-WIDTH WINDOW-HEIGHT 'solid 'black)))) ; background
 
 ; Number, Number, Number, Number -> Number
 ; d(A, B) = sqrt((x2 -x1)^2 + (y2 - y1)^2) 
@@ -120,7 +122,7 @@
 ;  drop another ball 
 (define (mouse-handler worldState m-x m-y click)
   (cond
-    [(and (<  (abs (distanceBetweenTwoPoints ball-x (ws-ball-y worldState) m-x m-y ))
+    [(and (<   (distanceBetweenTwoPoints (ws-ball-x worldState) (ws-ball-y worldState) m-x m-y )
                (* 1 (ws-ball-radius worldState)))
           (mouse=? click "button-down"))
             (make-ws
@@ -129,18 +131,19 @@
              (radiusRandomizer 1)         ; mutate radius
              'green ; mutate color
              (speedRandomizer 1) ; mutate speed
+             (ws-ball-x worldState)
              ball-start)]
     [else worldState]
     ))  
  
 
-(define init-ws (make-ws 0 0 10 'red 0  ball-start))
+(define init-ws (make-ws 0 0 10 'red 0 100 100))
 
 (big-bang init-ws
  (to-draw draw) ; for drawing
  (on-mouse mouse-handler) ; to respond to key press
  (on-tick tock) ; every clock tick
- (state #f))
+ (state #t))
 
  
  
