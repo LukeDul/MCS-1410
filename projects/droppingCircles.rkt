@@ -30,46 +30,94 @@
 ; Color Randomizer
 ; Speed Randomizer
 ; Size Randomizer
-(define WINDOW-HEIGHT 400)
+(define WINDOW-HEIGHT 500)
 
-(define WINDOW-WIDTH 200)
+(define WINDOW-WIDTH 300)
+
+(define MAX-MISSES 1) ; number of misses allowed before game over
+
+(define MAX-RADIUS 30)
+
+(define MIN-RADIUS 10)
+
+(define MAX-SPEED 10)
+
+(define MIN-SPEED 5)
+
+(define COLOR-SET (list 'red 'green 'blue 'yellow 'orange))
+
+(define ball-start 0)
 
 (define window (rectangle WINDOW-HEIGHT WINDOW-WIDTH 'solid 'gray))
 
 (define ball-x (/ WINDOW-WIDTH 2))
          
-(define-struct ws (misses points ball))
+(define-struct ws (misses points ball-radius ball-color ball-speed ball-y))
 
-(define-struct ball (radius color speed x y))
+; outputs a random color from a list of colors  
+(define (colorRandomizer n) (if (= n 1) 'red 'red))
 
-(define init-ball (make-ball 10 'red 5 ball-x 0))
+; outputs a random radius within the bounds of MAX-RADIUS and MIN-RADIUS (MIN-RADIUS <= RADIUS <= MAX-RADIUS)
+(define (radiusRandomizer n)(if (= n 1) 10 10))
 
-(define init-ws (make-ws 0 0 initball))
-
+; outputs a random speed within the bounds of MAX-SPEED and MIN-SPEED (MIN-SPEED <= SPEED <= MAX-SPEED)
+(define (speedRandomizer n)(if (= n 1) 2 2))
 
 
 ; worldState -> worldState 
 ; tock pseudocode
+;   upon ball deaths equal to MAX-MISSES
+;    end game 
 ;   upon ball death ( current ball-y - radius > goal line )
 ;    mutate ball-radius
 ;    mutate ball-color
 ;    mutate ball-speed
-;    reset ball-x and ball-y
+;    reset ball-y 
 ;   otheriwse
 ;    increment ball-y according to ball-speed
-(define (tock worldState) ())
-
-; worldState -> worldState 
-(define (mouse-handler worldState) ())
-
+(define (tock worldState)
+  (cond
+    [(= (ws-misses worldState) MAX-MISSES)
+     (stop-with "GAME OVER")]
+    
+    [(>= (ws-ball-y worldState) WINDOW-HEIGHT)
+     (make-ws      (+ 1 (ws-misses worldState)) ;increment misses
+                   (ws-points worldState) ;retain points
+                   (radiusRandomizer 1) ; mutate radius
+                   (colorRandomizer 1) ; mutate color
+                   (speedRandomizer 1) ; mutate speed
+                   ball-start)]
+    
+    [else
+     (make-ws (ws-misses worldState) ;retain misses
+                   (ws-points worldState) ;retain points
+                   (ws-ball-radius worldState) ; retain radius
+                   (ws-ball-color worldState) ; retain color
+                   (ws-ball-speed worldState) ; retain speed
+                   (+ (ws-ball-y worldState) (ws-ball-speed worldState)))])) ; mutate ball-y. ie move the ball down
 
 
 ; worldState -> Image
 ; draws a rectangele overlayed by a circle (ball (ws-ball worldState)) 
-(define (draw worldState) ())
+(define (draw worldState) (overlay/xy
+                           (rectangle WINDOW-WIDTH MAX-RADIUS 'solid 'white) ; covers ball entrance 
+                            0 0
+                           (underlay/xy
+                            (rectangle WINDOW-WIDTH WINDOW-HEIGHT 'solid 'black) ; background
+                            ball-x
+                            (ws-ball-y worldState)
+                            (circle (ws-ball-radius worldState) 'solid (ws-ball-color worldState)))))
+
+
+; worldState -> worldState 
+(define (mouse-handler worldState) (+ 1 worldState)) 
+
+
+(define init-ws (make-ws 0 0 10 'red 10  ball-start))
 
 (big-bang init-ws
  (to-draw draw) ; for drawing
- (on-key key-handler) ; to respond to key press
+ (on-mouse mouse-handler) ; to respond to key press
  (on-tick tock)) ; every clock tick
-         
+ 
+ 
