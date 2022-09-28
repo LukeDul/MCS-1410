@@ -57,18 +57,23 @@
 (define (distanceBetweenTwoPoints Ax Ay Bx By) (sqrt (+ (expt (- Bx Ax) 2)
                                                         (expt (- By Ay) 2))))
 
-
+(define colors (list 'red 'green 'blue 'yellow 'orange))
 ; use mouse movement as randomizer
-; outputs a random color from a list of colors  
+; outputs a random color from a list of colors   
 (define (colorRandomizer n) (if (= n 1) 'red 'red))
 
-; outputs a random radius within the bounds of MAX-RADIUS and MIN-RADIUS (MIN-RADIUS <= RADIUS <= MAX-RADIUS)
-(define (radiusRandomizer n)(if (= n 1) 10 10))
+; Number, Number -> Number
+; takes a seed and a range and outputs a number within that range
+(define (randomizer seed range) (modulo seed range))
 
-; outputs a random speed within the bounds of MAX-SPEED and MIN-SPEED (MIN-SPEED <= SPEED <= MAX-SPEED)
-(define (speedRandomizer n)(if (= n 1) 3 3))
- 
-
+; Number, Number -> List
+; takes a minimum and a maximum and builds a list
+; Given 1, 10 Output: '(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+; base case is when list rest = max
+; list (min, min +1, (min +1) +1 ... n+1 = max)
+; (define (listBuilder min max)
+  ; (rest (cons min (cons (add1 min) empty))))
+;  
 ; worldState -> worldState 
 ; tock pseudocode
 ;   upon ball deaths equal to MAX-MISSES
@@ -96,9 +101,9 @@
      (make-ws
       (+ 1 (ws-misses worldState)) ;increment misses
       (ws-points worldState) ;retain points
-      (radiusRandomizer 1) ; mutate radius
+      (randomizer 1 MAX-RADIUS) ; mutate radius
       (colorRandomizer 1) ; mutate color
-      (speedRandomizer 1) ; mutate speed
+      (randomizer 1 MAX-SPEED) ; mutate speed
       BALL-START
       #false)]
     
@@ -118,11 +123,11 @@
 (define (draw worldState)
     (place-image
      (if (ws-game-over worldState)
-         (text "YOU MIGHT DIE" 24 'red)
+         (text "GAME OVER" 24 'red)
          (circle (ws-ball-radius worldState) 'solid (ws-ball-color worldState))) ;ball image
      (/ WINDOW-WIDTH 2) ; x
      (ws-ball-y worldState) ; y
-     (rectangle WINDOW-WIDTH WINDOW-HEIGHT 'solid 'white))) ; background
+     (rectangle WINDOW-WIDTH WINDOW-HEIGHT 'solid 'black))) ; background
 
 
 ; worldState -> worldState
@@ -140,12 +145,12 @@
      (make-ws
       (ws-misses worldState)       ;retain misses
       (+ 1 (ws-points worldState)) ; increment points
-      (radiusRandomizer 1)         ; mutate radius
-      'green ; mutate color
-      (speedRandomizer 1) ; mutate speed
+      (random MIN-RADIUS MAX-RADIUS)         ; mutate radius
+      (list-ref colors (random 0 4)) ; mutate color
+      (random MIN-SPEED MAX-SPEED) ; mutate speed
       BALL-START
       #false)]
-    [else worldState])) 
+    [else worldState]))  
  
 
 (define init-ws (make-ws 0 0 MAX-RADIUS 'red 3 (- BALL-START 50) #false)) ; 50 is an extra buffer for the initial drop
