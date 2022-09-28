@@ -16,7 +16,7 @@
 (define (my-list-count l)
   (cond
     [(empty? l) 0]
-    [else (+ 1 (my-list-count (rest l)))]
+    [else (+ 1 (my-list-count (rest l)))] ; f of rest of l (recursive functions call themselves on smaller and smaller inputs. 
     ))
 
 ; Write a function my-list-sum that consumes a list of size 1, 2 or 3, and produces the sum of the elements of the list.
@@ -52,6 +52,10 @@
    [else (+ 0 (my-list-odd (rest lon)))]
    ))
 
+(define (my-list-odd lon)
+  (cond
+    []))
+
 ; Write a function my-list-odd that consumes a list of any size, and produces the number of odd numbers in that list.
 
 ; List of Numbers -> Number
@@ -62,3 +66,10 @@
    [(odd? (first lon)) (+ 1 (my-any-list-odd (rest lon)))]
    [else (+ 0 (my-any-list-odd (rest lon)))]
    ))
+
+
+; Number, Number -> List 
+; Given two numbers produce a list that contains all integers between those two numbers
+
+;(define (builder min)(append (list min)
+          ;(builder (list (add1 (first min))))))
