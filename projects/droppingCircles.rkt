@@ -101,9 +101,9 @@
      (make-ws
       (+ 1 (ws-misses worldState)) ;increment misses
       (ws-points worldState) ;retain points
-      (randomizer 1 MAX-RADIUS) ; mutate radius
-      (colorRandomizer 1) ; mutate color
-      (randomizer 1 MAX-SPEED) ; mutate speed
+      (random MIN-RADIUS MAX-RADIUS) ; mutate radius
+      (list-ref colors (random 0 4)) ; mutate color
+      (random MIN-SPEED MAX-SPEED) ; mutate speed
       BALL-START
       #false)]
     
@@ -114,20 +114,21 @@
       (ws-ball-radius worldState) ; retain radius 
       (ws-ball-color worldState) ; retain color
       (ws-ball-speed worldState) ; retain speed
-      (+ (ws-ball-y worldState) (ws-ball-speed worldState))
-      #false)])) ; mutate ball-y. ie move the ball down
+      (+ (ws-ball-y worldState) (ws-ball-speed worldState)) ; mutate ball-y. ie move the ball down 
+      #false)])) 
 
 
 ; worldState -> Image
 ; draws a rectangle overlayed by a circle (ball (ws-ball worldState)) 
 (define (draw worldState)
-    (place-image
+  (place-image (text (number->string (ws-points worldState)) 30 'red) 30 30 
+  (place-image
      (if (ws-game-over worldState)
-         (text "GAME OVER" 24 'red)
+          (place-image (text "GAME OVER" 24 'red) (/ WINDOW-WIDTH 2) (/ WINDOW-HEIGHT 2) (rectangle WINDOW-WIDTH WINDOW-HEIGHT 'solid 'black))
          (circle (ws-ball-radius worldState) 'solid (ws-ball-color worldState))) ;ball image
      (/ WINDOW-WIDTH 2) ; x
      (ws-ball-y worldState) ; y
-     (rectangle WINDOW-WIDTH WINDOW-HEIGHT 'solid 'black))) ; background
+     (rectangle WINDOW-WIDTH WINDOW-HEIGHT 'solid 'black)))) ; background
 
 
 ; worldState -> worldState
@@ -145,12 +146,15 @@
      (make-ws
       (ws-misses worldState)       ;retain misses
       (+ 1 (ws-points worldState)) ; increment points
-      (random MIN-RADIUS MAX-RADIUS)         ; mutate radius
+      (random MIN-RADIUS MAX-RADIUS) ; mutate radius
       (list-ref colors (random 0 4)) ; mutate color
       (random MIN-SPEED MAX-SPEED) ; mutate speed
       BALL-START
       #false)]
-    [else worldState]))  
+    [else worldState]))
+
+(define (gameover worldState) (if (ws-game-over worldState) #true #false))
+
  
 
 (define init-ws (make-ws 0 0 MAX-RADIUS 'red 3 (- BALL-START 50) #false)) ; 50 is an extra buffer for the initial drop
@@ -159,6 +163,7 @@
  (to-draw draw) ; for drawing
  (on-mouse mouse-handler) ; to respond to key press
  (on-tick tock) ; every clock tick
- (name "CLICK THE BALL OR YOU MIGHT DIE") 
+ (name "CLICK THE BALL OR YOU MIGHT DIE")
+; (stop-when gameover draw)
  (state #f)) ; #t for debugging worldState )
  
