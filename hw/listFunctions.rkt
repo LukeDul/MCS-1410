@@ -52,10 +52,6 @@
    [else (+ 0 (my-list-odd (rest lon)))]
    ))
 
-(define (my-list-odd lon)
-  (cond
-    []))
-
 ; Write a function my-list-odd that consumes a list of any size, and produces the number of odd numbers in that list.
 
 ; List of Numbers -> Number
