@@ -11,7 +11,6 @@
     [else (+ (first lon) (my-list-sum (rest lon)))]
     ))
 
-
 ; 2. Number of Items
 
 ; List -> Number
@@ -23,13 +22,13 @@
     ))
 
 
+
 ; 3. Number of Odd Items
 
 ; List of Numbers -> Number
 ; Produces the number of odd items in a list l of numbers
 (define (my-list-odd lon)
     (cond
-   [(> (my-list-count lon) 4) "Error: only takes lists of size 0, 1, 2 or 3"]
    [(empty? lon) 0]
    [(odd? (first lon)) (+ 1 (my-list-odd (rest lon)))]
    [else (+ 0 (my-list-odd (rest lon)))]
@@ -54,43 +53,82 @@
 
 ;Example: "incarcerated" -> "xncxrcxrxtxd"
 
-(define (vowel->x c) (cond
-                   [(char=? c #\a)]
-                   [(char=? c #\i)]
-                   [(char=? c #\e)]
-                   [(char=? c #\o)]
-                   [(char=? c #\u)]
-                   [(char=? c #\a)]
-                   []))
+(define (v->x c)
+  (cond
+    [(char=? c #\a) #\x]
+    [(char=? c #\i) #\x]
+    [(char=? c #\e) #\x]
+    [(char=? c #\o) #\x]
+    [(char=? c #\u) #\x]
+    [else c]))
 
 ; List of Char -> List of Char
 ; Replaces vowel charactes in the list with #\x
 (define (replace-vowels loc)
   (cond
     [(empty? loc) empty]
-    [else (cons ( (cons  empty)))]
+    [else (cons (v->x (first loc)) (cons (replace-vowels (rest loc)) empty))]
     ))
 
- #|
+
 ; 5. Every Other Letter
+; List of Letters -> String
+; Concatenates the letters to make the string, but only every other letter! Only works for lists of odd length.
+(define (recurse_odd lol)
+  (cond
+    [(empty? lol) ""]
+    [else (if (even? (my-list-count (rest lol)))
+              (string-append (first lol) (recurse_odd (rest lol)))
+              (string-append "" (recurse_odd (rest lol)))
+              )]))
+
+; List of Letters -> String
+; Concatenates the letters to make the string, but only every other letter! Only works for lists of even length.
+(define (recurse_even lol)
+  (cond
+    [(empty? lol) ""]
+    [else (if (odd? (my-list-count (rest lol)))
+              (string-append (first lol) (recurse_even (rest lol)))
+              (string-append "" (recurse_even (rest lol)))
+              )]))
+
 
 ; List of Letters -> String
 ; Concatenates the letters to make the string, but only every other letter!
-(define (oddLetters->string lol) ... )
+(define (oddLetters->string lol)
+  (cond
+    [(empty? lol) ""]
+    [(odd? (my-list-count lol)) (recurse_odd lol)]
+    [(even? (my-list-count lol)) (recurse_even lol)]))
 
 (check-expect (oddLetters->string (list "f" "u" "n")) "fn")
 (check-expect (oddLetters->string (list "f" "l" "u" "e" "n" "t")) "fun")
 (check-expect (oddLetters->string empty) "")
+
+
+
 
 ; 6. Position * Value
 
 ; List of Numbers -> List of Numbers
 ; Replaces each element of a list with its value multiplied by its position
 ; 0th number multiplied by 0, 1st number multiplied by 1, etc...
-(define (index-mult-list lon)  ... )
+(define (create-index lst)
+  (cond
+    [(empty?) empty)]
+    [else (cons (cons empty))]) 
+
+
+(define (index-mult-list lon)
+  (cond
+    [(empty? lon) empty]
+    [else (cons (* (first lon) (find-index (first lon))) (cons (index-mult-list (rest lon)) empty))]))
 ;(check-expect (index-mult-list (list 1 1 1 1 1 1)) (list 0 1 2 3 4 5))
 ;(check-expect (index-mult-list (list 1 2 -3 1.5)) (list 0 2 -6 4.5))
 ;(check-expect (index-mult-list empty) empty)
+
+
+#|
 
 ; 7. Position * Value Helper Function
 
