@@ -28,7 +28,7 @@
 ; List of Numbers -> Number
 ; Produces the number of odd items in a list l of numbers
 (define (my-list-odd lon)
-    (cond
+  (cond
    [(empty? lon) 0]
    [(odd? (first lon)) (+ 1 (my-list-odd (rest lon)))]
    [else (+ 0 (my-list-odd (rest lon)))]
@@ -67,7 +67,7 @@
 (define (replace-vowels loc)
   (cond
     [(empty? loc) empty]
-    [else (cons (v->x (first loc)) (cons (replace-vowels (rest loc)) empty))]
+    [else (cons (v->x (first loc)) (replace-vowels (rest loc)))]
     ))
 
 
@@ -139,10 +139,17 @@
 ; Returns a list containing the first and last items of a list.
 ; If the list has just one item, it returns a list with just that item.
 ; If the list has no items, it returns empty.
-(define (find_last lst)
+(define (helper lst)
   (cond
     [(empty? (rest lst)) (first lst)]
-    [else (find_last (rest lst))]))
+    [else (helper (rest lst))]))
  
 (define (first-and-last lst)
-  (cons (first lst) (cons (find_last lst) empty))) 
+  (cond
+    [(empty? lst) empty]
+    [(empty? (rest lst)) lst]
+    [else (cons (first lst) (cons (helper lst) empty)) ]))
+
+; (check-expect (first-and-last empty) empty)
+; (check-expect (first-and-last (cons 1 empty)) (cons 1 empty))
+; (check-expect (first-and-last (cons 1 (cons 2 (cons 3 empty)))) (cons 1 (cons 3 empty)))
