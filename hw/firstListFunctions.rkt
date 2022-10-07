@@ -101,49 +101,37 @@
     [(odd? (my-list-count lol)) (recurse_odd lol)]
     [(even? (my-list-count lol)) (recurse_even lol)]))
 
-(check-expect (oddLetters->string (list "f" "u" "n")) "fn")
-(check-expect (oddLetters->string (list "f" "l" "u" "e" "n" "t")) "fun")
-(check-expect (oddLetters->string empty) "")
-
+;(check-expect (oddLetters->string (list "f" "u" "n")) "fn")
+;(check-expect (oddLetters->string (list "f" "l" "u" "e" "n" "t")) "fun")
+;(check-expect (oddLetters->string empty) "")
 
 
 
 ; 6. Position * Value
 
+; List of Numbers, Number -> List of Numbers
+; Replaces each element of a list with its value multiplied by its index
+; 0th number multiplied by 0, 1st number multiplied by 1, etc...
+(define (posn-multiplier list_nums index)
+  (cond
+   [(empty? list_nums) empty]
+   [else
+    (cons
+      (* index (first list_nums))
+      (posn-multiplier (rest list_nums) (+ 1 index)))])) 
+
+
 ; List of Numbers -> List of Numbers
 ; Replaces each element of a list with its value multiplied by its position
 ; 0th number multiplied by 0, 1st number multiplied by 1, etc...
-(define (create-index lst)
-  (cond
-    [(empty?) empty)]
-    [else (cons (cons empty))]) 
+(define (index-mult-list list_nums)
+  (posn-multiplier list_nums 0))
 
 
-(define (index-mult-list lon)
-  (cond
-    [(empty? lon) empty]
-    [else (cons (* (first lon) (find-index (first lon))) (cons (index-mult-list (rest lon)) empty))]))
 ;(check-expect (index-mult-list (list 1 1 1 1 1 1)) (list 0 1 2 3 4 5))
 ;(check-expect (index-mult-list (list 1 2 -3 1.5)) (list 0 2 -6 4.5))
 ;(check-expect (index-mult-list empty) empty)
 
-
-#|
-
-; 7. Position * Value Helper Function
-
-;Multiplies the number by its position
-;by adding one to the multiplier each recursion
-;lon and a number->lon 
-(define (posn-multiplier lon i) ...)
-
-; The check-expects below might be helpful as you design this solution.
-; (Note that you should not include check-expects in Mimir submissions. It crashes Mimir...)
-
-; ( define l1 (cons 3 (cons 2 (cons 4 empty))) )
-; ( define l2         (cons 2 (cons 4 empty))  )
-; ( check-expect (posn-multiplier l1 0)   (cons 0 (cons 2 (cons 8 empty))) )
-; ( check-expect (posn-multiplier l2 1) 
 
 ; 8. First and Last
 
@@ -151,6 +139,10 @@
 ; Returns a list containing the first and last items of a list.
 ; If the list has just one item, it returns a list with just that item.
 ; If the list has no items, it returns empty.
-(define (first-and-last lot) ... )
-
-|#
+(define (find_last lst)
+  (cond
+    [(empty? (rest lst)) (first lst)]
+    [else (find_last (rest lst))]))
+ 
+(define (first-and-last lst)
+  (cons (first lst) (cons (find_last lst) empty))) 
