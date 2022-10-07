@@ -53,6 +53,8 @@
 
 ;Example: "incarcerated" -> "xncxrcxrxtxd"
 
+; Char -> Char
+; Takes a Character as input and if it is a vowel outputs #\x otherwise it returns the input. 
 (define (v->x c)
   (cond
     [(char=? c #\a) #\x]
@@ -104,7 +106,6 @@
 ;(check-expect (oddLetters->string (list "f" "u" "n")) "fn")
 ;(check-expect (oddLetters->string (list "f" "l" "u" "e" "n" "t")) "fun")
 ;(check-expect (oddLetters->string empty) "")
-
 
 
 ; 6. Position * Value
