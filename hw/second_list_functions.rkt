@@ -12,32 +12,48 @@
     [else (+ 0 (my-list-sum(rest lon)))]))
     
 
-#|
-2. Number of Items greater than 5
+
+; 2. Number of Items greater than 5
 
 ; List -> Number
-; Produces the number of items in the list l that are greater than 5
-; l will be a list of numbers
-(define (my-list-count l) ... )
+; Produces the number of items in the list lon that are greater than 5
+(define (my-list-count lon)
+  (cond
+    [(empty? lon) 0]
+    [(> (first lon) 5) (+ 1 (my-list-count (rest lon)))]
+    [else (+ 0 (my-list-count (rest lon)))]))
 
-3. Just the Odd Items
+
+
+; 3. Just the Odd Items
 
 ; List of Numbers -> List of Numbers
 ; Produces a new list with just the odd items in a list l of numbers
-(define (my-list-odd lon) ... )
+(define (my-list-odd lon)
+  (cond
+    [(empty? lon) empty]
+    [(odd? (first lon)) (cons (first lon) (my-list-odd(rest lon)))]
+    [else (my-list-odd(rest lon))]))
 
-4. Concatenate a List of Strings
 
-You are given a list of strings, and you want to combine them into a single string. Write the function "concatn8" to do this. For example, given the list:
 
-los = ["now" "I" "am" "happy"]
+; 4. Concatenate a List of Strings
 
-(concat los) would produce "nowIamhappy."
+; You are given a list of strings, and you want to combine them into a single string.
+; Write the function "concatn8" to do this. For example, given the list:
+
+; los = ["now" "I" "am" "happy"]
+
+;(concat los) would produce "nowIamhappy."
 
 ; List of Strings -> String
 ; Concatenates the strings in los into a single string.
-(define (concatn8 los) ... )
+(define (concatn8 los)
+  (cond
+    [(empty? los) ""]
+    [else (string-append (first los) (concatn8(rest los)))]))
 
+#|
 5. Every Third Letter
 
 ; List of Letters -> String
