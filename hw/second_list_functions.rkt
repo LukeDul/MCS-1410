@@ -53,19 +53,34 @@
     [(empty? los) ""]
     [else (string-append (first los) (concatn8(rest los)))]))
 
-#|
-5. Every Third Letter
+
+;5. Every Third Letter
+
+; List of Letters, Number -> String
+; Takes a List of Letters, lol, and a number, index, and outputs a string that contains every third letter.
+; This is a helper function for every-third and should not be used alone.  
+; The index MUST be 1.
+(define (every-third-helper lol index)
+  (cond
+    [(empty? lol) ""]
+    [(= index 0) (string-append (first lol) (every-third-helper (rest lol) (+ 1 index)))]
+    [(= (modulo index 3) 0) (string-append (first lol) (every-third-helper (rest lol) (+ 1 index)))]
+    [(not (= (modulo index 3) 0)) (string-append "" (every-third-helper (rest lol) (+ 1 index)))]
+    [else "Incorrect Index"]))
 
 ; List of Letters -> String
 ; Concatenates the letters to make the string, but only every third letter!
-(define (every-third lol) ... )
+(define (every-third lol)
+  (every-third-helper lol 0))
 
-;(check-expect (every-third (list "f" "u" "n")) "f")
-;(check-expect (every-third (list "f" "l" "u" "e" "n" "t")) "fe")
-;(check-expect (every-third (list "f" "i" "g" "u" "r" "i" "n" "e")) "fun")
-;(check-expect (every-third (list "d" "y" "n" "a" "s" "t" "y")) "day")
-;(check-expect (every-third empty) "")
+(check-expect (every-third (list "f" "u" "n")) "f")
+(check-expect (every-third (list "f" "l" "u" "e" "n" "t")) "fe")
+(check-expect (every-third (list "f" "i" "g" "u" "r" "i" "n" "e")) "fun")
+(check-expect (every-third (list "d" "y" "n" "a" "s" "t" "y")) "day")
+(check-expect (every-third empty) "")
 
+
+#|
 6. First Number, First String
 
 Write a function fnfs that takes as input a list containing at least one number and at least one string and produces a list of two items. The first item in the list should be the first number, and the second item in the list should be the first string. Below are some sample check-expects:
