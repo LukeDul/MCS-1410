@@ -136,20 +136,22 @@
 
 ; 8. First and Last
 
+; List of Things -> Element of List
+; Given a list, outputs the last element in the list
+(define (last-element lst)
+  (cond
+    [(empty? (rest lst)) (first lst)]
+    [else (last-element (rest lst))]))
+
 ; List of Things -> List of Two Things
 ; Returns a list containing the first and last items of a list.
 ; If the list has just one item, it returns a list with just that item.
 ; If the list has no items, it returns empty.
-(define (helper lst)
-  (cond
-    [(empty? (rest lst)) (first lst)]
-    [else (helper (rest lst))]))
- 
 (define (first-and-last lst)
   (cond
     [(empty? lst) empty]
     [(empty? (rest lst)) lst]
-    [else (cons (first lst) (cons (helper lst) empty)) ]))
+    [else (cons (first lst) (cons (last-element lst) empty)) ]))
 
 ; (check-expect (first-and-last empty) empty)
 ; (check-expect (first-and-last (cons 1 empty)) (cons 1 empty))
