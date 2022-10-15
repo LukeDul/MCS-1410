@@ -1,14 +1,18 @@
 ;; The first three lines of this file were inserted by DrRacket. They record metadata
 ;; about the language level of this file in a form that our tools can easily process.
 #reader(lib "htdp-advanced-reader.ss" "lang")((modname second_list_functions) (read-case-sensitive #t) (teachpacks ((lib "image.rkt" "teachpack" "2htdp") (lib "universe.rkt" "teachpack" "2htdp"))) (htdp-settings #(#t constructor repeating-decimal #t #t none #f ((lib "image.rkt" "teachpack" "2htdp") (lib "universe.rkt" "teachpack" "2htdp")) #f)))
-
-
 ; 1. Sum of the Odd Numbers in a List of Numbers
 
 ; List of Numbers -> Number
 ; Produces the sum of the odd numbers in a list. 0 if the list is empty.
-(define (my-list-sum lon) ...)
+(define (my-list-sum lon)
+  (cond
+    [(empty? lon) 0]
+    [(odd? (first lon)) (+ (first lon) (my-list-sum(rest lon)))]
+    [else (+ 0 (my-list-sum(rest lon)))]))
+    
 
+#|
 2. Number of Items greater than 5
 
 ; List -> Number
@@ -112,3 +116,4 @@ Example:
 ;                             (rectangle 10 20 'solid 'red)
 ;                             (rectangle 10 40 'solid 'red)
 ;                             (rectangle 10 60 'solid 'red)))
+|#
