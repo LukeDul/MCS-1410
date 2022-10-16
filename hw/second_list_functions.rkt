@@ -113,7 +113,7 @@
 ;(check-expect (fnfs (list "a" "b" "c" "d" "e" 1 2 3 4 5)) (list 1 "a"))
 ;(check-expect (fnfs (list "a" 1 "b" 4 "c" 7 "d" "e" 1 2 "x" 3 "y" 4 5)) (list 1 "a"))
 
-#|
+
 
 ; 7. Highest Point
 
@@ -125,14 +125,27 @@
 ; List of Posn -> Posn
 ; Returns the highest posn from a list of posn of size at least 1
 ; (Highest means that it's y-coordinate is least.)
-(define (highest lop))
-;(check-expect (highest (list (make-posn 1 2)
-;                             (make-posn 5 6)
-;                             (make-posn 0 1)
-;                             (make-posn 3 4))) (make-posn 0 1))
+(define (highest lop)
+  (if (= (length lop) 1)
+      (first lop)
+      (local [(define m (highest (rest lop)))]
+        (if (< (posn-y (first lop)) (posn-y m))
+            (first lop)
+            m))))
 
-|#
+      
+(check-expect (highest (list (make-posn 1 2)
+                             (make-posn 5 6)
+                             (make-posn 0 1)
+                             (make-posn 3 4))) (make-posn 0 1)) 
 
+(define (mymaxl lon)
+  (if (= (length lon) 1)
+      (first lon)
+      (local [(define m (mymaxl (rest lon)))]
+        (if (> (first lon) m)
+            (first lon)
+            m))))
 
 ;8. Squarify
 
