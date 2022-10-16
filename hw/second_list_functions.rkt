@@ -73,43 +73,72 @@
 (define (every-third lol)
   (every-third-helper lol 0))
 
-(check-expect (every-third (list "f" "u" "n")) "f")
-(check-expect (every-third (list "f" "l" "u" "e" "n" "t")) "fe")
-(check-expect (every-third (list "f" "i" "g" "u" "r" "i" "n" "e")) "fun")
-(check-expect (every-third (list "d" "y" "n" "a" "s" "t" "y")) "day")
-(check-expect (every-third empty) "")
+;(check-expect (every-third (list "f" "u" "n")) "f")
+;(check-expect (every-third (list "f" "l" "u" "e" "n" "t")) "fe")
+;(check-expect (every-third (list "f" "i" "g" "u" "r" "i" "n" "e")) "fun")
+;(check-expect (every-third (list "d" "y" "n" "a" "s" "t" "y")) "day")
+;(check-expect (every-third empty) "")
 
 
-#|
-6. First Number, First String
 
-Write a function fnfs that takes as input a list containing at least one number and at least one string and produces a list of two items. The first item in the list should be the first number, and the second item in the list should be the first string. Below are some sample check-expects:
+;6. First Number, First String
+
+; Write a function fnfs that takes as input a list containing at least one number
+; and at least one string and produces a list of two items.
+; The first item in the list should be the first number,
+; and the second item in the list should be the first string. Below are some sample check-expects:
+
+
+; List -> Number 
+(define (find-first-number lst)
+  (cond
+    [(empty? lst) "Given list contains no numbers"]
+    [(number? (first lst)) (first lst)]
+    [else (find-first-number (rest lst))]))
+
+; List -> String 
+(define (find-first-string lst)
+  (cond
+    [(empty? lst) "Given list contains no strings"]
+    [(string? (first lst)) (first lst)]
+    [else (find-first-string (rest lst))]))
 
 ; List -> List 
-(define (fnfs l) .. )
-(check-expect (fnfs (list 1 "a")) (list 1 "a"))
-(check-expect (fnfs (list "a" 1)) (list 1 "a"))
-(check-expect (fnfs (list 1 2 3 4 5 "a" "b")) (list 1 "a"))
-(check-expect (fnfs (list "a" "b" "c" "d" "e" 1 2 3 4 5)) (list 1 "a"))
-(check-expect (fnfs (list "a" 1 "b" 4 "c" 7 "d" "e" 1 2 "x" 3 "y" 4 5)) (list 1 "a"))
+(define (fnfs lst) (cons (find-first-number lst) (cons (find-first-string lst) empty)))
 
-7. Highest Point
+
+;(check-expect (fnfs (list 1 "a")) (list 1 "a"))
+;(check-expect (fnfs (list "a" 1)) (list 1 "a"))
+;(check-expect (fnfs (list 1 2 3 4 5 "a" "b")) (list 1 "a"))
+;(check-expect (fnfs (list "a" "b" "c" "d" "e" 1 2 3 4 5)) (list 1 "a"))
+;(check-expect (fnfs (list "a" 1 "b" 4 "c" 7 "d" "e" 1 2 "x" 3 "y" 4 5)) (list 1 "a"))
+
+#|
+
+; 7. Highest Point
+
+; Number -> Number
+; Given a pair of numbers, a & b, returns the lower number
+(define (lowest_num a b)
+  (if (< a b) a b))
 
 ; List of Posn -> Posn
 ; Returns the highest posn from a list of posn of size at least 1
 ; (Highest means that it's y-coordinate is least.)
-(define (highest lop)
-   ...)
+(define (highest lop))
 ;(check-expect (highest (list (make-posn 1 2)
 ;                             (make-posn 5 6)
 ;                             (make-posn 0 1)
 ;                             (make-posn 3 4))) (make-posn 0 1))
 
-8. Squarify
+|#
 
-Example:
 
-(squarify (list 10 30 50 20 40))
+;8. Squarify
+
+;Example:
+
+
 
 
 
@@ -119,32 +148,35 @@ Example:
 ; of size 0x0:  (empty-scene 0 0)   (This is built-in to DrRacket.)
 
 (define (squarify lon)
-  ...)
+  (cond
+    [(empty? lon) (empty-scene 0 0)]
+    [else (beside (square (first lon) 'solid 'blue) (squarify (rest lon)))]))
 
+
+;(squarify (list 10 30 50 20 40))
 ;(check-expect (squarify (list 10 30 50 20 40))
 ;              (beside (square 10 'solid 'blue) (square 30 'solid 'blue)
 ;                      (square 50 'solid 'blue) (square 20 'solid 'blue)
-;                      (square 40 'solid 'blue))
-
-9. Bar Graph
-
-Example:
-
-(bar-graph (list 10 30 50 20 40))
+;                     (square 40 'solid 'blue)))
 
 
+
+
+;9. Bar Graph
 
 ; List of Number -> Image
 ; produces a visual representation of the numbers in a sort of bar graph
 ; use "beside/align" with the "bottom" option.
 (define (bar-graph lon)
-  ...)
+  (cond
+    [(empty? lon) (empty-scene 0 0)]
+    [else (beside/align "bottom" (rectangle 10 (first lon) 'solid 'red) (bar-graph (rest lon)))]))
+
 ;(check-expect (bar-graph (list 70 50 30 10 20 40 60))
 ;               (beside/align "bottom" (rectangle 10 70 'solid 'red)
 ;                             (rectangle 10 50 'solid 'red)
-;                             (rectangle 10 30 'solid 'red)
+;                            (rectangle 10 30 'solid 'red)
 ;                             (rectangle 10 10 'solid 'red)
 ;                             (rectangle 10 20 'solid 'red)
 ;                             (rectangle 10 40 'solid 'red)
 ;                             (rectangle 10 60 'solid 'red)))
-|#
