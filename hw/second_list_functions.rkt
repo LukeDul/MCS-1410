@@ -134,18 +134,11 @@
             m))))
 
       
-(check-expect (highest (list (make-posn 1 2)
-                             (make-posn 5 6)
-                             (make-posn 0 1)
-                             (make-posn 3 4))) (make-posn 0 1)) 
+;(check-expect (highest (list (make-posn 1 2)
+;                             (make-posn 5 6)
+;                             (make-posn 0 1)
+;                             (make-posn 3 4))) (make-posn 0 1)) 
 
-(define (mymaxl lon)
-  (if (= (length lon) 1)
-      (first lon)
-      (local [(define m (mymaxl (rest lon)))]
-        (if (> (first lon) m)
-            (first lon)
-            m))))
 
 ;8. Squarify
 
