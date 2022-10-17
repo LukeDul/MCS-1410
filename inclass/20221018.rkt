@@ -1,7 +1,7 @@
 ;; The first three lines of this file were inserted by DrRacket. They record metadata
 ;; about the language level of this file in a form that our tools can easily process.
 #reader(lib "htdp-advanced-reader.ss" "lang")((modname |20221018|) (read-case-sensitive #t) (teachpacks ((lib "image.rkt" "teachpack" "2htdp") (lib "universe.rkt" "teachpack" "2htdp"))) (htdp-settings #(#t constructor repeating-decimal #t #t none #f ((lib "image.rkt" "teachpack" "2htdp") (lib "universe.rkt" "teachpack" "2htdp")) #f)))
-#| Recursion w/ Images and map 
+#| Recursion w/ Images & map & filter
 
 Start with a triangle then start subdividing it into smaller triangles 
 
@@ -16,6 +16,15 @@ each step is called DEPTH-n
   (cond
     [(empty? l) empty]
     [else (cons (f (first l)) (my-map f (rest l)))]))
+
+
+(define (my-filter predicate l)
+  (cond
+    [(empty? l) empty]
+    [(predicate (first l)) (cons (first l) (my-filter predicate (rest l)))]
+    [else  (my-filter predicate (rest l))]))
+
+
 
 
 (define (sierpinksi-triangle depth width)
