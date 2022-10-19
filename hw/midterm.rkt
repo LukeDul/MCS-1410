@@ -140,25 +140,12 @@ You must write function contracts and one-line descriptions for each of the func
 
 ;Write a function called list-all-equal that takes a non-empty list of numbers, and returns #true if they all have the same value, and #false otherwise.
 
-
-
 (define (list-all-equal lon)
   (cond
     [(empty? lon) #true]
     [(empty? (rest lon)) #true]
     [(= (first lon) (first (rest lon))) (list-all-equal (rest lon))]
     [else #false]))
-  
-
-
-
-(define (equal-helper lon all-equal?)
-  (if all-equal? 
-    (cond
-      [(empty? lon) 0]
-      [else (if (= (first lon) (equal-helper (rest lon) all) #true #false))]
-    #false )))
-
 
 ;10. Non-decreasing List
 
@@ -166,22 +153,74 @@ You must write function contracts and one-line descriptions for each of the func
 
 ; You may assume that the list contains at least one number. And if the list has exactly one number, then it should return #true.
 
- #|
-11. Bridgely
 
-A list of numbers is called "bridgely" if it contains at least 3 numbers, and every number in the list, except for the first and the last, is greater than both the first and the last number.
+(define (increasing? lon)
+  (cond
+    [(empty? lon) #true]
+    [(empty? (rest lon)) #true]
+    [(>=  (first (rest lon)) (first lon)) (increasing? (rest lon))]
+    [else #false]))
 
-Thus, these lists are bridgely:
-(list 1 2 3 4 5 6 5 4 3 2 1)
-(list 0 4 4 4 4 4 2)
+;11. Bridgely
 
-And these are not:
-(list 1 2 3 4 5)
-(list 1 1 2 3 4 3 2 1)
+;A list of numbers is called "bridgely" if it contains at least 3 numbers, and every number in the list, except for the first and the last,
+;is greater than both the first and the last number.
 
-Write a bridgely? function that takes a list of at least 3 numbers and returns #true if it is bridgely, otherwise #false.
-|#
+;Thus, these lists are bridgely:
+;(list 1 2 3 4 5 6 5 4 3 2 1)
+;(list 0 4 4 4 4 4 2)
 
+;And these are not:
+;(list 1 2 3 4 5)
+;(list 1 1 2 3 4 3 2 1)
+
+;Write a bridgely? function that takes a list of at least 3 numbers and returns #true if it is bridgely, otherwise #false.
+
+; List of Numbers -> Boolean
+; Takes a list of at least 3 numbers, lon, the first number in the list, first-num, and the last number in the list, last-num,
+; and if the given list is a bridgely produces #true, otherwise #false.
+;(define (first-and-last-element-remover ))
+
+; List -> List
+; Takes a List, lst, and and produces a new list identical the the given list but without the last element. 
+(define (last-element-remover lst)
+  (cond
+    [(empty? lst) empty]
+    [(empty? (rest lst)) (last-element-remover (rest lst)) ]
+    [else (cons (first lst) (last-element-remover (rest lst)))]))
+
+
+; List -> List
+; Takes a List, lst, and produces a new list identical to the given list but without the first element. 
+(define (first-element-remover lst)
+  (rest lst))
+
+
+; List of Numbers, Number -> Boolean
+; Takes a list of numbers, lon, and a number, n, and produces #true if n is greater than each element in lon, otherwise #false. 
+(define (num-bigger? lon n)
+  (cond
+    [(empty? lon) #true]
+    [(< n (first lon)) (num-bigger? (rest lon) n)]
+    [else #false]))
+
+
+; List -> Variable 
+; Takes a List, lst, and produces the last element in list. 
+(define (my-last lst)
+  (cond
+    [(empty? lst) empty]
+    [(empty? (rest lst)) (first lst)]
+    [else (my-last (rest lst))]))
+
+  
+; List of Numbers -> Boolean 
+; Takes a list of at least 3 numbers, lon, and if the given list is a bridgely produces #true, otherwise #false.
+(define (bridgely? lon)
+  (if (and (num-bigger? (last-element-remover (rest lon)) (first lon))
+           (num-bigger? (last-element-remover (rest lon)) (my-last lon)))
+      #true
+      #false))
 
 
 
@@ -193,7 +232,7 @@ Write a bridgely? function that takes a list of at least 3 numbers and returns #
 ;0's should produce 'DarkBlue beads of size 10, and 1's should produce 'Gold beads of size 7.
 ;These beads should be strung together into a necklace, as shown below for the list (list 0 1 1 0 1 0 0 1).
 
-  |#
+  
 
 ;List of Numbers -> Boolean
 ; Takes a List of Numbers, lon, and produces #true if all the elements in the list are equal otherwise produces #false.
@@ -259,7 +298,8 @@ Write a bridgely? function that takes a list of at least 3 numbers and returns #
 
 
 
-#| 15. Fractal
+#|
+15. Fractal
 
 Write a function called frac that takes a number n as input, and produces the nth stage of the fractal. Note that the smallest square, when n = 0, has side 5.
 
