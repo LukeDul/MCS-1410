@@ -50,7 +50,6 @@ You must write function contracts and one-line descriptions for each of the func
 (define P (make-posn (random 1 100) (random 1 100)))
 
 ; distance = sqrt (x-x1^2 +y-y1^2)
-
 (define Problem4
   (local
     [(define A (- (posn-x P) 1))
@@ -73,6 +72,8 @@ You must write function contracts and one-line descriptions for each of the func
 ; Write a function that takes two posn as input, and tells whether the first is left or right of the second,
 ; or neither. Here are some sample check-expects.
 
+
+; Posn
 (define (left-or-right P1 P2)
   (local
     [(define x1 (posn-x P1))
@@ -176,11 +177,6 @@ You must write function contracts and one-line descriptions for each of the func
 
 ;Write a bridgely? function that takes a list of at least 3 numbers and returns #true if it is bridgely, otherwise #false.
 
-; List of Numbers -> Boolean
-; Takes a list of at least 3 numbers, lon, the first number in the list, first-num, and the last number in the list, last-num,
-; and if the given list is a bridgely produces #true, otherwise #false.
-;(define (first-and-last-element-remover ))
-
 ; List -> List
 ; Takes a List, lst, and and produces a new list identical the the given list but without the last element. 
 (define (last-element-remover lst)
@@ -188,12 +184,6 @@ You must write function contracts and one-line descriptions for each of the func
     [(empty? lst) empty]
     [(empty? (rest lst)) (last-element-remover (rest lst)) ]
     [else (cons (first lst) (last-element-remover (rest lst)))]))
-
-
-; List -> List
-; Takes a List, lst, and produces a new list identical to the given list but without the first element. 
-(define (first-element-remover lst)
-  (rest lst))
 
 
 ; List of Numbers, Number -> Boolean
@@ -236,8 +226,6 @@ You must write function contracts and one-line descriptions for each of the func
 
 ;List of Numbers -> Boolean
 ; Takes a List of Numbers, lon, and produces #true if all the elements in the list are equal otherwise produces #false.
-    
-
 (define (binary-necklace lon)
   (local
     [(define blue-bead (circle 10 'solid 'darkblue))
