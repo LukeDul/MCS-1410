@@ -139,12 +139,23 @@ You must write function contracts and one-line descriptions for each of the func
 ;9. All Equal in a List of Numbers
 
 ;Write a function called list-all-equal that takes a non-empty list of numbers, and returns #true if they all have the same value, and #false otherwise.
+#|
+(define (equal-helper lon all-equal?)
+  (if all-equal? 
+    (cond
+      [(empty? lon) 0]
+      [else (if (= (first lon) (equal-helper (rest lon) all) #true #false))]
+    #false )))
 
-(define (list-all-equal lon)
-  (cond  
+
+
+(define (list-all-equal lon help)
+  (cond
     [(empty? lon) #true]
-    [(= (first lon) (list-all-equal(rest lon))) (rest lon)]
-    [else #false]))
+    [(
+  
+    
+  |#  
 
 
 
@@ -168,26 +179,67 @@ And these are not:
 (list 1 1 2 3 4 3 2 1)
 
 Write a bridgely? function that takes a list of at least 3 numbers and returns #true if it is bridgely, otherwise #false.
-
-12. Binary Necklace
-
-Write a function called binary-necklace that takes a list of numbers, all 0 or 1, and produces a necklace representing the list.
-
-0's should produce 'DarkBlue beads of size 10, and 1's should produce 'Gold beads of size 7.
-These beads should be strung together into a necklace, as shown below for the list (list 0 1 1 0 1 0 0 1).
+|#
 
 
+; 12. Binary Necklace
 
-13. Keep the Short Words
+;Write a function called binary-necklace that takes a list of numbers, all 0 or 1, and produces a necklace representing the list.
 
-Write a function called short-words that takes as input a list of strings, and produces a new list containing only those words in the input list that had 4 or fewer characters.
+;0's should produce 'DarkBlue beads of size 10, and 1's should produce 'Gold beads of size 7.
+;These beads should be strung together into a necklace, as shown below for the list (list 0 1 1 0 1 0 0 1).
+
+(define (binary-necklace lon)
+  (local
+    [(define blue-bead (circle 10 'solid 'darkblue))
+     (define gold-bead (circle 7 'solid 'gold))]
+    (cond
+      [(empty? lon) empty-image]
+      [(= (first lon) 1) (beside blue-bead (binary-necklace (rest lon)))]
+      [(= (first lon) 0) (beside gold-bead (binary-necklace (rest lon)))])))
+
+
+;13. Keep the Short Words
+
+;Write a function called short-words that takes as input a list of strings, and produces a new list containing only those words in the input list that had 4 or fewer characters.
+
+
+; List of Strings -> List of Strins
+; Takes a List of Strings, los, and produces a new list containing only the strings in the input list that had 4 or fewer characters.
+(define (short-words los)
+  (cond
+    [(empty? los) empty]
+    [(<= (string-length (first los)) 4) (cons (first los) (short-words (rest los)))]
+    [else (short-words (rest los ))]))
+
+
 (check-expect
    (short-words (list "Whenever" "my" "awesome" "mind" "is" "challenged" "creativity" "defeats" "numb" "defeatism"))
                 (list "my" "mind" "is" "numb"))
 
-14. Moving Lasers
 
-Write a function, move-lasers, that takes as input a list of posns, and produces a new list of posns consisting of all of the posns in the input list moved 5 pixels to the right. But any laser that has gone off screen after being moved should not be in the list. The screen has width 200.
+
+; 14. Moving Lasers
+
+; Write a function, move-lasers, that takes as input a list of posns,
+; and produces a new list of posns consisting of all of the posns in the input list moved 5 pixels to the right.
+; But any laser that has gone off screen after being moved should not be in the list. The screen has width 200.
+
+; List of Posns -> List of Posns
+; Given a List of Posns, lop, produces a new list containing the same Posns with their X values increased by 5.
+; If the increased X value is greater than 200 that Posn is not included in the new list. 
+(define (move-lasers lop)
+  (cond
+    [(empty? lop) empty] 
+    [else
+     (local
+       [(define x (posn-x (first lop)))
+        (define y (posn-y (first lop)))]
+     (if (> (+ x 5) 200)
+         (move-lasers (rest lop))
+         (cons (make-posn (+ x 5) y) (move-lasers (rest lop)))))]))
+
+
 (check-expect
   (move-lasers
     (list (make-posn 10 10) (make-posn 20 20) (make-posn 100 100)
@@ -195,12 +247,23 @@ Write a function, move-lasers, that takes as input a list of posns, and produces
     (list (make-posn 15 10) (make-posn 25 20) (make-posn 105 100)
           (make-posn 200 195)))
 
-15. Fractal
+
+
+#| 15. Fractal
 
 Write a function called frac that takes a number n as input, and produces the nth stage of the fractal. Note that the smallest square, when n = 0, has side 5.
 
-Here is a sequence of images formed by calling (build-list 6 frac).
+Here is a sequence of images formed by calling (build-list 6 frac).  |#
 
+
+; Number -> Image
+; Given a Number, depth, produces an image of the given depth of a fractal
+(define (frac depth)
+  (cond
+    [(zero? depth) (square 5 'solid 'white)]
+    [else
+     (local
+      [(define r (frac (- depth 1)))]
+       (beside/align "center"   (above r r) (flip-horizontal r)))]))
  
 
-|#
