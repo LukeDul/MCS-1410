@@ -139,24 +139,25 @@ You must write function contracts and one-line descriptions for each of the func
 ;9. All Equal in a List of Numbers
 
 ;Write a function called list-all-equal that takes a non-empty list of numbers, and returns #true if they all have the same value, and #false otherwise.
-#|
+
+
+
+(define (list-all-equal lon)
+  (cond
+    [(empty? lon) #true]
+    [(empty? (rest lon)) #true]
+    [(= (first lon) (first (rest lon))) (list-all-equal (rest lon))]
+    [else #false]))
+  
+
+
+
 (define (equal-helper lon all-equal?)
   (if all-equal? 
     (cond
       [(empty? lon) 0]
       [else (if (= (first lon) (equal-helper (rest lon) all) #true #false))]
     #false )))
-
-
-
-(define (list-all-equal lon help)
-  (cond
-    [(empty? lon) #true]
-    [(
-  
-    
-  |#  
-
 
 
 ;10. Non-decreasing List
@@ -182,12 +183,21 @@ Write a bridgely? function that takes a list of at least 3 numbers and returns #
 |#
 
 
+
+
+
 ; 12. Binary Necklace
 
 ;Write a function called binary-necklace that takes a list of numbers, all 0 or 1, and produces a necklace representing the list.
 
 ;0's should produce 'DarkBlue beads of size 10, and 1's should produce 'Gold beads of size 7.
 ;These beads should be strung together into a necklace, as shown below for the list (list 0 1 1 0 1 0 0 1).
+
+  |#
+
+;List of Numbers -> Boolean
+; Takes a List of Numbers, lon, and produces #true if all the elements in the list are equal otherwise produces #false.
+    
 
 (define (binary-necklace lon)
   (local
@@ -204,7 +214,7 @@ Write a bridgely? function that takes a list of at least 3 numbers and returns #
 ;Write a function called short-words that takes as input a list of strings, and produces a new list containing only those words in the input list that had 4 or fewer characters.
 
 
-; List of Strings -> List of Strins
+; List of Strings -> List of Strings
 ; Takes a List of Strings, los, and produces a new list containing only the strings in the input list that had 4 or fewer characters.
 (define (short-words los)
   (cond
