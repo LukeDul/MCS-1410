@@ -18,11 +18,11 @@ each step is called DEPTH-n
     [else (cons (f (first l)) (my-map f (rest l)))]))
 
 
-(define (my-filter predicate l)
+(define (my-filter predicate lst)
   (cond
-    [(empty? l) empty]
-    [(predicate (first l)) (cons (first l) (my-filter predicate (rest l)))]
-    [else  (my-filter predicate (rest l))]))
+    [(empty? lst) empty]
+    [(predicate (first lst)) (cons (first lst) (my-filter predicate (rest lst)))]
+    [else  (my-filter predicate (rest lst))]))
 
 
 
