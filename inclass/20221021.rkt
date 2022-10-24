@@ -15,7 +15,9 @@ replace (cons with f
 replace empty with initial value
 
 
+anonymous functions
 
+(map (lambda (y) (* y y y) 1)
 
 |#
 
@@ -28,3 +30,6 @@ replace empty with initial value
      (= (foldr - num lst) 0)]
     [else
      (= (foldr - num lst) num)]))
+
+
+
