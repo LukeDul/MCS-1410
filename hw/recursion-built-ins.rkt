@@ -79,13 +79,18 @@ Please submit on Gradescope (though we might change this).
 (check-expect (rod m) (list 2 2 4 4))
 
 
-#|
+
 ; Problem 5: Sum of Posns
-
+; Use a lambda, with map, filter and/or fold, to produce the sum of a 
 ; list of posns. (See the check-expect)
-(define (sum-lop lop) ... )
-; (check-expect (sum-lop (list (make-posn 1 2) (make-posn 3 4) (make-posn 5 6))) (make-posn 9 12))
 
+; List of Posns -> Posn
+; Given a list of posns, lop, produces a posn containing the sum of all the posns in lop. 
+(define (sum-lop lop) (foldl (lambda (posn1 posn2) (make-posn (+ (posn-x posn1) (posn-x posn2)) (+ (posn-y posn1) (posn-y posn2)))) (make-posn 0 0) lop)) 
+(check-expect (sum-lop (list (make-posn 1 2) (make-posn 3 4) (make-posn 5 6))) (make-posn 9 12))
+
+
+#|
 ; Problem 6: Align the Posns
 
 (define (y17 lop) ... )
