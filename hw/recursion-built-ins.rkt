@@ -40,7 +40,6 @@ Please submit on Gradescope (though we might change this).
                    (square 30 'solid 'blue) (square 40 'solid 'blue)))
 
 
-
 ; Problem 2: Sum of Odd Numbers
 
 ; Computes the sum of the odd numbers in a list, using filter and fold. No need for a lambda.
