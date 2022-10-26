@@ -57,7 +57,10 @@ Please submit on Gradescope (though we might change this).
 ; Problem 3: Sum of Square of Odds
 
 ; Computes the sum of the squares of the odd numbers in a list, using map, filter and fold. 
-(define (soos l) ... )
+
+; List of Numbers -> Number
+; Given a list of numbers, lon, produces the sum of the squares of all the odd numbers in lon.
+(define (soos lon) (foldl + 0 (map sqr (filter odd? lon))))
 
 (check-expect (soos l) 0)
 (check-expect (soos m) 10)
