@@ -118,8 +118,8 @@ Please submit on Gradescope (though we might change this).
                               (rectangle 30 30 'outline 'green))) 1600)
 
 
-#|
 
+#|
 Problem 8: Circles Inscribed in Squares
 
 Given a list of lightblue squares, generate a single image that consists of those squares with red outline circles inscribed inside them.
@@ -127,10 +127,13 @@ Given a list of lightblue squares, generate a single image that consists of thos
 Please use overlay to put the circles atop the squares.
 
 Here is an example of before and after:
-
+|#
 
 (require 2htdp/image)
-(define (inscribeC loS) ...)
+; List of Images -> Image
+; Given a list of squares, loS, produces an image of all the squares with red outline circles overlayed on them.
+(define (inscribeC loS) (foldr beside empty-image (map (lambda (element) (overlay (circle (/ (image-width element) 2) 'outline 'red) element)) loS)))
+
 (check-expect (inscribeC (list (square 30 'solid 'lightblue)
                                (square 50 'solid 'lightblue)
                                (square 40 'solid 'lightblue)))
@@ -138,6 +141,8 @@ Here is an example of before and after:
                       (overlay (circle 25 'outline 'red) (square 50 'solid 'lightblue))
                       (overlay (circle 20 'outline 'red) (square 40 'solid 'lightblue))))
 
+
+#|
 ;Problem 9: Sum of Red Areas
 
 ; You are given a list of red squares with blue circles inscribed within them. Your job is to write a function that will produce the sum of the red areas.
