@@ -142,21 +142,28 @@ Here is an example of before and after:
                       (overlay (circle 20 'outline 'red) (square 40 'solid 'lightblue))))
 
 
-#|
+
 ;Problem 9: Sum of Red Areas
 
 ; You are given a list of red squares with blue circles inscribed within them. Your job is to write a function that will produce the sum of the red areas.
 
-; Example List:
 
+; Given a list loi, which is similar to the list in the 
+; description, produce the sum of the areas of the red sections.
+; Note: Racket has a built in pi value, denoted "pi".
 
 
 (require 2htdp/image)
-(define (sumRedA loi) ...)
+
+; List of Images -> Number
+; Takes a list of red squares with blue circles inscribed in them, produces the area of the red area. 
+(define (sumRedA loi) (foldl + 0 (map (lambda (element) (- (sqr (image-height element)) (* pi (sqr (/ (image-height element) 2))))) loi)))
 (check-within (sumRedA (list (overlay (circle 20 'solid 'red) (square 40 'solid 'blue))
                              (overlay (circle 25 'solid 'red) (square 50 'solid 'blue))
                              (overlay (circle 10 'solid 'red) (square 20 'solid 'blue)))) 965.708 0.001)
 
+
+#|
 ; Problem 10: Number of Squares <50
 
 ; Given a list of square images, produce the number 
