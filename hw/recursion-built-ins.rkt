@@ -156,7 +156,7 @@ Here is an example of before and after:
 (require 2htdp/image)
 
 ; List of Images -> Number
-; Takes a list of red squares with blue circles inscribed in them, produces the area of the red area. 
+; Takes a list of red squares with blue circles inscribed in them, produces the area of the red areas. 
 (define (sumRedA loi) (foldl + 0 (map (lambda (element) (- (sqr (image-height element)) (* pi (sqr (/ (image-height element) 2))))) loi)))
 (check-within (sumRedA (list (overlay (circle 20 'solid 'red) (square 40 'solid 'blue))
                              (overlay (circle 25 'solid 'red) (square 50 'solid 'blue))
@@ -174,8 +174,8 @@ Here is an example of before and after:
 ; Takes a list of squares, loS, and produces the number of images with a width of less than 50
 (define (<50 loS) (foldl + 0 (map (lambda (element) (if (< (image-width element) 50) 1 0)) loS)))
 
-
 #|
+
 ; Problem 11: Sum of Red Areas 2
 
 ; Example List:
@@ -184,8 +184,16 @@ Here is an example of before and after:
 
 ; Given a list loi, which is a list of square images similar to the list in the 
 ; description, produce the sum of the areas of the red sections.
+
 (require 2htdp/image)
+
+; Lost of Images -> Number
+; Takes a list of red squares with blue circles inscribed in them, produces the area of the red area. 
 (define (sumRedA2 loi) ...)
+
+
+|#
+
 
 ; Problem 12: Number Clicked
 
@@ -196,10 +204,12 @@ Here is an example of before and after:
 ; (px, py) is the center of the ball
 (define-struct ball (size px py))
 
-(define (numClicked x y lob) ...)
-
 ; Number, Number, Number, Number -> Number
 ; Distance function. Use if you wish.
 (define (distance a b c d) (sqrt (+ (sqr (- c a)) (sqr (- d b)))))
 
-|#
+; List of Strucutres, Number, Number -> Number
+; Takes a list of ball structures, lob, and a point and produces the number of balls that the point is within. 
+(define (numClicked x y lob) (foldl + 0 (map (lambda (element) (if (<= (distance (ball-px element) (ball-py element) x y) (ball-size element)) 1 0)) lob)))
+
+
