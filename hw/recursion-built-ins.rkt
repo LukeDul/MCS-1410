@@ -163,14 +163,19 @@ Here is an example of before and after:
                              (overlay (circle 10 'solid 'red) (square 20 'solid 'blue)))) 965.708 0.001)
 
 
-#|
+
 ; Problem 10: Number of Squares <50
 
 ; Given a list of square images, produce the number 
 ; of those images with a side length less than 50.
 (require 2htdp/image)
-(define (<50 loS) ...)
 
+; List of Images -> Number
+; Takes a list of squares, loS, and produces the number of images with a width of less than 50
+(define (<50 loS) (foldl + 0 (map (lambda (element) (if (< (image-width element) 50) 1 0)) loS)))
+
+
+#|
 ; Problem 11: Sum of Red Areas 2
 
 ; Example List:
