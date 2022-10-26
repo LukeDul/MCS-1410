@@ -174,7 +174,6 @@ Here is an example of before and after:
 ; Takes a list of squares, loS, and produces the number of images with a width of less than 50
 (define (<50 loS) (foldl + 0 (map (lambda (element) (if (< (image-width element) 50) 1 0)) loS)))
 
-#|
 
 ; Problem 11: Sum of Red Areas 2
 
@@ -188,11 +187,8 @@ Here is an example of before and after:
 (require 2htdp/image)
 
 ; Lost of Images -> Number
-; Takes a list of red squares with blue circles inscribed in them, produces the area of the red area. 
-(define (sumRedA2 loi) ...)
-
-
-|#
+; Takes a list of blue squares with 4 red circles overlayed on them, produces the area of the red area. 
+(define (sumRedA2 loi) (foldl + 0 (map (lambda (element)  (* pi (sqr (/ (image-height element) 2)))) loi)))
 
 
 ; Problem 12: Number Clicked
