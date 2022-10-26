@@ -86,17 +86,23 @@ Please submit on Gradescope (though we might change this).
 
 ; List of Posns -> Posn
 ; Given a list of posns, lop, produces a posn containing the sum of all the posns in lop. 
-(define (sum-lop lop) (foldl (lambda (posn1 posn2) (make-posn (+ (posn-x posn1) (posn-x posn2)) (+ (posn-y posn1) (posn-y posn2)))) (make-posn 0 0) lop)) 
+(define (sum-lop lop) (foldl (lambda (posn1 posn2) (make-posn (+ (posn-x posn1) (posn-x posn2)) (+ (posn-y posn1) (posn-y posn2)))) (make-posn 0 0) lop))
+
 (check-expect (sum-lop (list (make-posn 1 2) (make-posn 3 4) (make-posn 5 6))) (make-posn 9 12))
 
 
-#|
 ; Problem 6: Align the Posns
 
-(define (y17 lop) ... )
-; (check-expect (y17 (list (make-posn 1 2) (make-posn 3 4)))
-;               (list (make-posn 1 17) (make-posn 3 17)))
+; Given a list of Posns, modify them all so that their y-coordinates all become 17.
 
+; List of Posns -> List of Posns
+; Given a list of posns, lop, produces lop with all y-coordinates changed to 17.
+(define (y17 lop) (map (lambda (position) (make-posn (posn-x position) 17)) lop))
+ (check-expect (y17 (list (make-posn 1 2) (make-posn 3 4)))
+               (list (make-posn 1 17) (make-posn 3 17)))
+
+
+#|
 ; Problem 7: Sum of Rectangle Areas
 
 (require 2htdp/image)
