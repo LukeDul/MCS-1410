@@ -102,14 +102,20 @@ Please submit on Gradescope (though we might change this).
                (list (make-posn 1 17) (make-posn 3 17)))
 
 
-#|
+
 ; Problem 7: Sum of Rectangle Areas
+; Produce the sum of all the areas of 
+; the rectangles in list loR.
 
 (require 2htdp/image)
-(define (sum-recA loR) ...)
-;(check-expect (sum-recA (list (rectangle 10 10 'solid 'red)
-;                              (rectangle 20 30 'solid 'blue)
-;                              (rectangle 30 30 'outline 'green))) 1600)
+
+; List of Images -> Number
+; Given a list of rectangles loR, produces the area of all the rectangles. 
+(define (sum-recA loR) (foldl + 0 (map (lambda (element) (* (image-width element) (image-height element))) loR)))
+
+(check-expect (sum-recA (list (rectangle 10 10 'solid 'red)
+                              (rectangle 20 30 'solid 'blue)
+                              (rectangle 30 30 'outline 'green))) 1600)
 
 
 #|
@@ -122,7 +128,6 @@ Please use overlay to put the circles atop the squares.
 
 Here is an example of before and after:
 
-|#
 
 (require 2htdp/image)
 (define (inscribeC loS) ...)
