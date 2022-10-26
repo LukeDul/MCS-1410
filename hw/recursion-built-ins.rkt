@@ -33,28 +33,37 @@ Please submit on Gradescope (though we might change this).
 
 ; List of Numbers -> List of Images
 ; Given a list of numbers, lon, produces a list of squares with a size ten times each element in the list 
-(define (blue-squares lon) (map (lambda (x) (square (* x 10) 'solid 'blue)) lon))
+(define (blue-squares lon) (map (lambda (element) (square (* element 10) 'solid 'blue)) lon))
   
 (check-expect (blue-squares m)
               (list (square 10 'solid 'blue) (square 20 'solid 'blue)
                    (square 30 'solid 'blue) (square 40 'solid 'blue)))
 
 
-#|
+
 ; Problem 2: Sum of Odd Numbers
 
 ; Computes the sum of the odd numbers in a list, using filter and fold. No need for a lambda.
-(define (sod l) ... )
-;(check-expect (sod l) 0)
-;(check-expect (sod m) 4)
+
+; List of Numbers -> Number
+; Given a list of numbers, lon, produces the sum of all the odd numbers in lon
+(define (sod lon) (foldl + 0 (filter odd? lon)))
+                   
+(check-expect (sod l) 0)
+(check-expect (sod m) 4)
+
+
 
 ; Problem 3: Sum of Square of Odds
 
 ; Computes the sum of the squares of the odd numbers in a list, using map, filter and fold. 
 (define (soos l) ... )
-;(check-expect (soos l) 0)
-;(check-expect (soos m) 10)
 
+(check-expect (soos l) 0)
+(check-expect (soos m) 10)
+
+
+#|
 ; Problem 4: Round up Odd
 
 ; Adds one to each odd number, leaves even numbers unchanged. This should use a lambda.
