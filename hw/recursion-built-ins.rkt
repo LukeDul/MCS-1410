@@ -66,14 +66,20 @@ Please submit on Gradescope (though we might change this).
 (check-expect (soos m) 10)
 
 
-#|
+
 ; Problem 4: Round up Odd
 
 ; Adds one to each odd number, leaves even numbers unchanged. This should use a lambda.
-(define (rod l) ... )
-;(check-expect (rod l) l)
-;(check-expect (rod m) (list 2 2 4 4))
 
+; List of Numbers -> List of Numbers
+; Given a list of numbers, lon, produces a list of numbers with 1 added to each odd number in lon. 
+(define (rod lon) (map (lambda (element) (if (odd? element) (+ 1 element) element)) lon))
+
+(check-expect (rod l) l)
+(check-expect (rod m) (list 2 2 4 4))
+
+
+#|
 ; Problem 5: Sum of Posns
 
 ; list of posns. (See the check-expect)
