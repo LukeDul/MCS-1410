@@ -8,6 +8,10 @@
 
 (define velocity 1)
 
+
+
+
+
 ; the canvas upon which everything will be drawn  
 (define canvas
   (local
