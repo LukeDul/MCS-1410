@@ -60,7 +60,7 @@
 ; For this problem, produce the line in the file that has the least number of words.
 ; Again, no need to worry about punctuation. Your function should produce a list of the words on that line
 
-; List of a Lists -> List
+; List of a Lists, List -> List
 ; Given a list of a lists, 2d-list, and a list, lst, returns the shortest list.
 (define (shortest-line-helper lst 2d-list)
   (cond
