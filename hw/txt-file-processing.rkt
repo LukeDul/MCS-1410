@@ -24,6 +24,8 @@
   (seventeenth-helper lst 0))
 
 
+
+
 ; Problem 2: Longest Word in the Text
 ; Write a function to find the longest word in the file given by the parameter filename.
 ; Note the given check-expects, and the included small test file.
@@ -40,8 +42,8 @@
     [else (longest-word-helper (first words) (rest words))]))
 
 
-; List of Strings -> String
-; Given a list of strings, words, returns the longest string. 
+; Text File -> String
+; Given a textfile, filename, returns the longest string. 
 (define (longest-word-in-a-file filename)
   (local
     [(define words (read-words filename))]
@@ -51,11 +53,20 @@
 ; (check-expect (longest-word-in-a-file "txt-files/test1.txt") "love")
 ; (check-expect (longest-word-in-a-file "txt-files/test2.txt") "farmhouse")
 
+
+
+
 ; Problem 3: Shortest Line in a File
 ; For this problem, produce the line in the file that has the least number of words.
 ; Again, no need to worry about punctuation. Your function should produce a list of the words on that line
- 
-(define (shortest-line-in-a-file filename) ... )
+
+; List of a List of Strings -> List of Strings 
+; Given a list of a list of strings, 2dlist, returns the longest list of strings.
+(define (shortest-line-helper 2dlist) ...)
+
+; Text File -> List of Strings  
+; Given a text file, filename, returns the longest line as a list of strings. 
+(define (shortest-line-in-a-file filename) ...)
 
 ; (check-expect (shortest-line-in-a-file "test1.txt") (list "Such" "indomitable" "effervescence" "accomplishes" "magnificance"))
 ; (check-expect (shortest-line-in-a-file "test2.txt") (list "Hourglass") )
