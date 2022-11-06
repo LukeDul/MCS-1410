@@ -28,4 +28,4 @@
  (on-tick tock) ; every clock tick
  (name "asteroids")
  (stop-when gameover)
- (state #f)) ; #t for debugging worldState )
+ (state #f)) ; #t for debugging worldState 
