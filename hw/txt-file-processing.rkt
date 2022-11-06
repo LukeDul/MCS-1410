@@ -2,6 +2,7 @@
 ;; about the language level of this file in a form that our tools can easily process.
 #reader(lib "htdp-advanced-reader.ss" "lang")((modname txt-file-processing) (read-case-sensitive #t) (teachpacks ((lib "image.rkt" "teachpack" "2htdp") (lib "universe.rkt" "teachpack" "2htdp"))) (htdp-settings #(#t constructor repeating-decimal #t #t none #f ((lib "image.rkt" "teachpack" "2htdp") (lib "universe.rkt" "teachpack" "2htdp")) #f)))
 (require 2htdp/batch-io)
+(require racket/string)
 
 ; Problem 1: Seventeenth Item in a List
 ; Write a function to find the 17th item in a list.
@@ -80,3 +81,29 @@
 
 (check-expect (shortest-line-in-a-file "txt-files/txt-file-processing/problem3/test1.txt") (list "Such" "indomitable" "effervescence" "accomplishes" "magnificance"))
 (check-expect (shortest-line-in-a-file "txt-files/txt-file-processing/problem3/test2.txt") (list "Hourglass") )
+
+
+
+
+; Problem 4: Find Lines with So-Many Words
+; Write a function that takes a filename and a number k as input,
+; and produces a list containing all the lines of the text that contain exactly k words in the line.
+; You may find the string-join function useful.
+
+
+(define (lines-with-k-words filename k) ... )
+
+
+(check-expect (lines-with-k-words "txt-files/txt-file-processing/problem4/test1.txt" 7)
+    (list
+    "Where the quiet-coloured end of evening smiles,"
+    "On the solitary pastures where our sheep"
+    "Of our country's very capital, its prince"
+    "To distinguish slopes of verdure, certain rills"
+    "O'er the hundred-gated circuit of a wall"
+    "Such a carpet as, this summer-time, o'er-spreads"
+    "Every vestige of the city, guessed alone,"
+    "By the caper overrooted, by the gourd"
+    "To their folding, all our many-tinkling fleece"))
+(check-expect (lines-with-k-words "txt-files/txt-file-processing/problem4/test2.txt" 4)
+    (list "An ancient childhood thing" "Is always the same"))
