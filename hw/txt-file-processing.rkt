@@ -50,3 +50,12 @@
 
 ; (check-expect (longest-word-in-a-file "txt-files/test1.txt") "love")
 ; (check-expect (longest-word-in-a-file "txt-files/test2.txt") "farmhouse")
+
+; Problem 3: Shortest Line in a File
+; For this problem, produce the line in the file that has the least number of words.
+; Again, no need to worry about punctuation. Your function should produce a list of the words on that line
+ 
+(define (shortest-line-in-a-file filename) ... )
+
+; (check-expect (shortest-line-in-a-file "test1.txt") (list "Such" "indomitable" "effervescence" "accomplishes" "magnificance"))
+; (check-expect (shortest-line-in-a-file "test2.txt") (list "Hourglass") )
