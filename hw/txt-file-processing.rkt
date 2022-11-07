@@ -57,6 +57,7 @@
 
 
 
+
 ; Problem 3: Shortest Line in a File
 ; For this problem, produce the line in the file that has the least number of words.
 ; Again, no need to worry about punctuation. Your function should produce a list of the words on that line
@@ -90,9 +91,25 @@
 ; and produces a list containing all the lines of the text that contain exactly k words in the line.
 ; You may find the string-join function useful.
 
+; List of Lists, Number -> List of Lists
+; Given a list of lists, 2d-list, and a number, z, returns the list of lists populated with lists that have a length of x.
+(define (list-length-filter 2d-list x)
+  (cond
+    [(empty? 2d-list) empty]
+    [(= x (length (first 2d-list))) (cons (first 2d-list) (list-length-filter (rest 2d-list) x))]
+    [else  (list-length-filter (rest 2d-list) x)]))
 
-(define (lines-with-k-words filename k) ... )
 
+; Text File, Number -> List of Strings
+; Given a text file path, filename, and number, k,
+; returns a list of strings that has every line with k amount of strings. 
+(define (lines-with-k-words filename k)
+  (local
+    [(define 2d-list (read-words/line filename))
+    (define filtered-list (list-length-filter 2d-list k))]
+    (map string-join filtered-list)))
+    
+    
 
 (check-expect (lines-with-k-words "txt-files/txt-file-processing/problem4/test1.txt" 7)
     (list
@@ -107,3 +124,5 @@
     "To their folding, all our many-tinkling fleece"))
 (check-expect (lines-with-k-words "txt-files/txt-file-processing/problem4/test2.txt" 4)
     (list "An ancient childhood thing" "Is always the same"))
+
+
