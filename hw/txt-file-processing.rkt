@@ -148,3 +148,37 @@
 
 
 
+; Problems 6: Bar Graph
+; Turn a file into a bar graph. Each word in the file becomes a rectangle whose width is 5 and whose height is the number of letters in the word. Each line becomes a beside of its word-rectangles, and the whole text becomes the above of its bar-graph lines.
+; The results for the three files given in the Template are shown below.
+
+; Text File -> Image
+; Given a text file produces a bar graph based upon the length of each word. 
+(define (file2barGraph filename)
+  (local
+    [(define 2d-list (read-words/line filename))]
+    (stack (file2barGraph-helper 2d-list))))
+
+(define (file2barGraph-helper 2d-list)
+  (map (lambda (x) (squeeze (string->image x))) 2d-list))
+
+; List of Images -> Image
+; Given a list of images, loi, returns an image of each image beside the other.
+(define (squeeze loi)
+  (if (empty? loi)
+      empty-image
+      (beside (first loi) (squeeze (rest loi)))))
+
+; List of Images -> Image
+; Given a list of images, loi, returns an image of each image above the other.
+(define (stack loi)
+  (if (empty? loi)
+      empty-image
+      (above (first loi) (stack (rest loi)))))
+
+
+; List of Strings -> List of Images
+; Given a list of strings, los, returns a list of rectangles with height equal to the length of each string. 
+(define (string->image los) (map (lambda (word) (rectangle 5 (string-length word) 'solid 'red)) los))
+
+
