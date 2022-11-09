@@ -126,3 +126,25 @@
     (list "An ancient childhood thing" "Is always the same"))
 
 
+
+
+; Problem 5: Delete Words with More Than Three Letters
+; Reproduce the file as a list of strings, in which every word of length > 3 has been deleted.
+
+
+; Text File -> List of Strings
+; Given a text file, filename, produces a list of strings containing only words from the textfile of length <= 3. 
+(define (delete>3 filename)
+  (local
+    [(define 2d-list (read-words/line filename))]
+
+    (map string-join (delete>3-helper 2d-list))))
+
+
+; List of Lists of Strings -> List of Strings
+; Given a list of lists of strings, 2d-list, returns a list of lists of strings without the words with length > 3.
+(define (delete>3-helper 2d-list)
+  (map (lambda (line) (filter (lambda (item) (<= (string-length item) 3)) line)) 2d-list))
+
+
+
