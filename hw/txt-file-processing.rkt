@@ -157,24 +157,17 @@
 (define (file2barGraph filename)
   (local
     [(define 2d-list (read-words/line filename))]
-    (stack (file2barGraph-helper 2d-list))))
+    (draw-loi above (map (lambda (x) (draw-loi beside (string->image x))) 2d-list))))
 
-(define (file2barGraph-helper 2d-list)
-  (map (lambda (x) (squeeze (string->image x))) 2d-list))
 
-; List of Images -> Image
-; Given a list of images, loi, returns an image of each image beside the other.
-(define (squeeze loi)
-  (if (empty? loi)
-      empty-image
-      (beside (first loi) (squeeze (rest loi)))))
 
 ; List of Images -> Image
-; Given a list of images, loi, returns an image of each image above the other.
-(define (stack loi)
+; Given a list of images, loi, returns an image based upon the given function, func. 
+(define (draw-loi loi func)
   (if (empty? loi)
       empty-image
-      (above (first loi) (stack (rest loi)))))
+      (func (first loi) (draw-loi func (rest loi)))))
+
 
 
 ; List of Strings -> List of Images
