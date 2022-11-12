@@ -62,27 +62,30 @@
 ; For this problem, produce the line in the file that has the least number of words.
 ; Again, no need to worry about punctuation. Your function should produce a list of the words on that line
 
-; List of a Lists, List -> List
-; Given a list of a lists, 2d-list, and a list, lst, returns the shortest list.
-(define (shortest-line-helper lst 2d-list)
-  (cond
-    [(empty? 2d-list) empty]
-    [(empty? (rest 2d-list)) lst]
-    [(empty? lst) (shortest-line-helper (first 2d-list) (rest 2d-list))]
-    [(< (length lst) (length (first 2d-list))) (shortest-line-helper lst (rest 2d-list))]
-    [else (shortest-line-helper (first 2d-list) (rest 2d-list))]))
-
 
 ; Text File -> List of Strings  
-; Given a text file, filename, returns the shortest line as a list of strings. 
+; returns the shortest list of a list of lists
 (define (shortest-line-in-a-file filename)
-  (local
-    [(define 2d-list (read-words/line filename))]
-    (shortest-line-helper empty 2d-list )))
+  (local [(define 2d-list (read-words/line filename))]
+    (foldl (lambda (line acc)
+             (cond [(empty? line) acc]
+                   [(empty? acc) line]
+                   [(< (length line) (length acc)) line]
+                   [else acc]))
+           empty
+           2d-list))) 
+
+
+
+ (check-expect (shortest-line-in-a-file  "txt-files/txt-file-processing/problem3/test1.txt") 
+      (list "Such" "indomitable" "effervescence" "accomplishes" "magnificance"))
+ (check-expect (shortest-line-in-a-file "txt-files/txt-file-processing/problem3/test2.txt") 
+       (list "Hourglass") )
+
+
 
 (check-expect (shortest-line-in-a-file "txt-files/txt-file-processing/problem3/test1.txt") (list "Such" "indomitable" "effervescence" "accomplishes" "magnificance"))
 (check-expect (shortest-line-in-a-file "txt-files/txt-file-processing/problem3/test2.txt") (list "Hourglass") )
-
 
 
 
