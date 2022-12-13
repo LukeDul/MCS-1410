@@ -17,8 +17,6 @@
 (check-expect (empty-tree? empty-tree) #t)
 (check-expect (empty-tree? (make-tree "test" empty-tree empty-tree 1)) #f)
 
-; Tree, String -> Tree
-; Inserts String item into the sorted binary tree tf
 (define (tree-insert item t)
   (cond [(empty-tree? t) (make-tree item empty-tree empty-tree 1)]
         [(string=? (string-downcase item) (string-downcase (tree-item t)))
@@ -68,16 +66,26 @@
 
 
 ; Tree -> Number
-; returns the total number of nodes in a tree 
+; returns number of nodes in given tree
 (define (tree-size tree)
-  (length (tree-size-helper tree)))
+  (cond [(empty-tree? tree) 0]
+        [else 
+          (+ 1
+            (tree-size (tree-right tree)) 
+            (tree-size (tree-left tree)))]))
+
+
+; Tree -> Number
+; returns the total number of nodes in a tree 
+;(define (tree-size tree)
+ ; (length (tree-size-helper tree)))
 
 
 ; Tree -> List
 ; appends each item of each node to a list 
-(define (tree-size-helper tree) 
-  (cond [(empty-tree? tree) empty]
-        [else (append (tree-size-helper (tree-right tree)) (cons (tree-item tree) (tree-size-helper (tree-left tree))))]))
+;(define (tree-size-helper tree) 
+ ; (cond [(empty-tree? tree) empty]
+  ;      [else (append (tree-size-helper (tree-right tree)) (cons (tree-item tree) (tree-size-helper (tree-left tree))))]))
 
 
 (check-expect (tree-size tree0) 4)
@@ -98,6 +106,14 @@
         [(> (height-helper (tree-left tree) height) (height-helper (tree-right tree) height)) (height-helper (tree-left tree) (+ 1 height))]
         [else (height-helper (tree-right tree) (+ 1 height))])) 
 
+; Tree -> Number
+; returns the height of the given tree
+(define (tree-height tree)
+    (cond [(empty-Tree? tree) 0] 
+          [else 
+            (+ 1 
+              (max  (tree-height (tree-left tree)) 
+                    (tree-height (tree-right tree)) )] ))
 
 (check-expect (tree-height tree0) 2) 
 (check-expect (tree-height tree1) 9) 
@@ -126,5 +142,96 @@
 (define (total-count-helper tree) 
   (cond [(empty-tree? tree) empty]
         [else (append (total-count-helper (tree-right tree)) (cons (tree-count tree) (total-count-helper (tree-left tree))))]))
+
+
+#|
+We have been  building binary trees sorted alphabetically by the word in the node.
+
+For this problem, you want to re-build the tree so that it is sorted by count, instead of by word.
+
+Write a function (sort-by-count tn) that takes a binary tree node and produces a new binary tree node,
+
+which is the root of a binary tree that is sorted by count.
+
+Note that many different correct trees may be possible. Your function may produce any one of them.
+
+Also, since different words may occur with equal counts, you will need to decide how to break ties.
+
+Ties may be broken arbitrarily. That is, you can put them into the left sub-tree or the right sub-tree.
+
+I suggest the following strategy: Sort the tree as you did in problem 3,
+
+then re-fold it into a tree with a modified tree-insert function that sorts by "count" instead of "item."
+
+
+(define (sort-by-count tree)
+  (foldl tree-insert
+
+
+; Tree, String -> Tree
+; Inserts String item into the sorted binary tree tf
+
+
+|#
+
+
+; Tree -> List of Lists
+; returns a list of the items in the given tree with their counts sorted alphabetically.  
+(define (tree-sort tree)
+  (reverse (sort-helper tree)))
+
+; Tree -> List of Lists
+; returns a list of the items in the given tree with their counts unsorted.
+(define (sort-helper tree) 
+  (cond [(empty-tree? tree) empty] 
+        [else (append (sort-helper (tree-right tree)) (cons (list (tree-item tree) (tree-count tree)) (sort-helper (tree-left tree))))]))
+
+
+; Tree -> Tree
+(sort-by-count tree)
+    (foldl tree-insert empty-tree (tree-sort tree)))
+
+(define (tree-insert tuple tree)
+  (cond [(empty-tree? t) (make-tree item empty-tree empty-tree 1)]
+        [(< (second tuple) (tree-count tree))
+        (make-tree (tree-item tree)       
+                    (tree-insert item (tree-left t))
+                    (tree-right t)
+                    (tree-count t))]
+        [else
+         (make-tree (tree-item t)
+                    (tree-left t)
+                    (tree-insert item (tree-right t))
+                    (tree-count t))]))
+
+
+
+(define (num-leaves tree)
+    (cond 
+        [(empty-Tree? tree) 0]
+        [(and 
+          (empty-Tree? (Tree-right tree)) 
+          (empty-Tree? (Tree-left tree))) 
+          1]
+        [else (+ 
+          (num-leaves (Tree-right tree) 
+          (Tree-left tree)]))
+(check-expect (num-leaves tree0) 2)
+(check-expect (num-leaves tree1) 9)
+(check-expect (num-leaves tree2) 11)
+(check-expect (num-leaves tree3) 2)
+
+
+
+;Write a function (count-nodes-at-depth tn d) that tells how many nodes there are at a given depth d below a given root node tn.
+
+(check-expect (count-nodes-at-depth tree0 1) 2)
+(check-expect (count-nodes-at-depth tree0 2) 1)
+(check-expect (count-nodes-at-depth tree1 2) 3)
+(check-expect (count-nodes-at-depth tree1 4) 4)
+(check-expect (count-nodes-at-depth tree1 6) 5)
+(check-expect (count-nodes-at-depth tree2 2) 4)
+(check-expect (count-nodes-at-depth tree2 4) 5)
+(check-expect (count-nodes-at-depth tree2 6) 5)
 
 

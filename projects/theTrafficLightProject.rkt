@@ -35,7 +35,7 @@
     ))
 
 
-; COLOR, TIME -> Boolean
+; COLOR, TIME -> Boolean 
 ; COLOR is a String, RED, GREEN or YELLOW 
 ; TIME is a Number
 

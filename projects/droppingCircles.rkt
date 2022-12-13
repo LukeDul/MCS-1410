@@ -71,7 +71,7 @@
 ; Given 1, 10 Output: '(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 ; base case is when list rest = max
 ; list (min, min +1, (min +1) +1 ... n+1 = max)
-; (define (listBuilder min max)
+; (define (listBuilder min max) 
   ; (rest (cons min (cons (add1 min) empty))))
 ;  
 ; worldState -> worldState 
@@ -82,7 +82,7 @@
 ;    mutate ball-radius
 ;    mutate ball-color
 ;    mutate ball-speed
-;    reset ball-y 
+;    reset ball-y  
 ;   otheriwse
 ;    increment ball-y according to ball-speed
 (define (tock worldState)
@@ -139,19 +139,16 @@
 ; else
 ;  return worldState ie do nothing 
 (define (mouse-handler worldState m-x m-y click)
-  (cond
-    [(and
-      (<= (distanceBetweenTwoPoints (/ WINDOW-WIDTH 2) (ws-ball-y worldState) m-x m-y ) (ws-ball-radius worldState))
-      (mouse=? click "button-down"))
-     (make-ws
-      (ws-misses worldState)       ;retain misses
-      (+ 1 (ws-points worldState)) ; increment points
-      (random MIN-RADIUS MAX-RADIUS) ; mutate radius
-      (list-ref colors (random 0 4)) ; mutate color
-      (random MIN-SPEED MAX-SPEED) ; mutate speed
-      BALL-START
-      #false)]
-    [else worldState]))
+  (cond [(and (<= (distanceBetweenTwoPoints (/ WINDOW-WIDTH 2) (ws-ball-y worldState) m-x m-y ) (ws-ball-radius worldState))
+              (mouse=? click "button-down"))
+         (make-ws (ws-misses worldState)       ;retain misses
+                  (+ 1 (ws-points worldState)) ; increment points
+                  (random MIN-RADIUS MAX-RADIUS) ; mutate radius
+                  (list-ref colors (random 0 4)) ; mutate color
+                  (random MIN-SPEED MAX-SPEED) ; mutate speed
+                  BALL-START
+                  #false)]
+        [else worldState]))
 
 (define (gameover worldState) (if (ws-game-over worldState) #true #false))
 
